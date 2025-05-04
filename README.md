@@ -8,9 +8,11 @@ BLEH lives in your Notion, answers your questions (sometimes even accurately), a
 BLEH is a chatbot integrated with a Language Model API (like OpenAI’s ChatGPT) and a Notion-based knowledge management system.
 
 It helps you:
-- Ask questions directly from your Notion workspace
+
+- Ask questions directly from Web App
 - Get somewhat reasonable answers
 - (Optionally) write those answers back into Notion so you can forget them later
+- Organize and manage your chat into a knowledge-base
 
 ## ✨ Features
 
@@ -20,5 +22,6 @@ It helps you:
 
 1. Clone this repo:
    ```bash
-   git clone https://github.com/yourusername/bleh.git
+   git clone https://github.com/hhtnghia321/BLEH.git
    cd bleh
+   ```
