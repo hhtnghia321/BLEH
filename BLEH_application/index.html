@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BLEH Chatbot</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f2f2f2;
+        margin: 0;
+        padding: 0;
+      }
+      #chat-container {
+        max-width: 600px;
+        margin: 40px auto;
+        background: white;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .message {
+        padding: 10px;
+        margin: 10px 0;
+      }
+      .user {
+        text-align: right;
+        color: #007aff;
+      }
+      .bot {
+        text-align: left;
+        color: #333;
+      }
+      #input-area {
+        display: flex;
+        margin-top: 20px;
+      }
+      input {
+        flex: 1;
+        padding: 10px;
+        font-size: 16px;
+      }
+      button {
+        padding: 10px 15px;
+        font-size: 16px;
+        background: #007aff;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+      pre {
+        background: #f4f4f4;
+        padding: 10px;
+        border-radius: 5px;
+        overflow-x: auto;
+      }
+      code {
+        font-family: monospace;
+      }
+    </style>
+
+    <!-- Markdown parser -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- HTML sanitizer -->
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.5/dist/purify.min.js"></script>
+  </head>
+  <body>
+    <div id="chat-container">
+      <h2>BLEH 🤖</h2>
+      <div id="chat-log"></div>
+      <div id="input-area">
+        <input
+          type="text"
+          id="user-input"
+          placeholder="Type something..."
+          onkeypress="handleKey(event)"
+        />
+        <button onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+
+    <script>
+      async function sendMessage() {
+        const input = document.getElementById("user-input");
+        const msg = input.value.trim();
+        if (!msg) return;
+
+        appendMessage("user", msg);
+        input.value = "";
+
+        try {
+          const response = await fetch("/chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message: msg }),
+          });
+
+          const data = await response.json();
+          appendMessage("bot", data.reply);
+        } catch (err) {
+          appendMessage("bot", "**Error:** Unable to reach the server.");
+        }
+      }
+
+      function appendMessage(sender, text) {
+        const msgDiv = document.createElement("div");
+        msgDiv.className = `message ${sender}`;
+        msgDiv.innerHTML = DOMPurify.sanitize(marked.parse(text));
+        document.getElementById("chat-log").appendChild(msgDiv);
+      }
+
+      function handleKey(event) {
+        if (event.key === "Enter") {
+          sendMessage();
+        }
+      }
+    </script>
+  </body>
+</html>

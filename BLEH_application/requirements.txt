@@ -1,0 +1,5 @@
+OpenAI
+fastapi 
+uvicorn[standard]
+gunicorn
+python-dotenv

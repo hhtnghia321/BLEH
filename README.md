@@ -25,3 +25,37 @@ It helps you:
    git clone https://github.com/hhtnghia321/BLEH.git
    cd bleh
    ```
+
+## Deploy Instruction
+
+### Prequistion
+
+- Docker
+- gcloud cli
+- enable GKE
+- enable Google Cloud Build
+- enable Google Artifact Register
+
+1. Login to your gcloud project
+   ```bash
+   gcloud auth login
+   gcloud config set project YOUR_PROJECT_ID
+   ```
+   Your YOUR_PROJECT_ID can be acquired from console.gcloud
+   Check your gcloud login
+   ```bash
+   gcloud auth list
+   ```
+   Check your gcloud project list and current project
+   ```bash
+   gcloud projects list
+   gcloud config list project
+   ```
+2. Config your Cluster in ymls file
+   ```bash
+   values.yml
+   ```
+3. Deploy the Application to GKE
+   ```bash
+   . k8s-init.sh
+   ```
