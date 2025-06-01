@@ -1,0 +1,63 @@
+version: 8.13.4  # or the latest supported 8.x version
+
+replicas: 1
+minimumMasterNodes: 1
+
+volumeClaimTemplate:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 5Gi
+    
+esJavaOpts: "-Xms512m -Xmx512m"
+
+resources:
+  limits:
+    memory: 1Gi
+  requests:
+    cpu: 100m
+    memory: 512Mi
+
+extraEnvs:
+  - name: ELASTIC_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: elastic-credentials
+        key: elastic
+
+readinessProbe:
+  exec:
+    command:
+      - bash
+      - -c
+      - |
+        set -e
+        if [ -z "${ELASTIC_PASSWORD}" ]; then
+          echo "Missing password"
+          exit 1
+        fi
+        curl -k -u "elastic:${ELASTIC_PASSWORD}" -f https://127.0.0.1:9200/_cluster/health?wait_for_status=yellow&timeout=10s
+  initialDelaySeconds: 20
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 10
+
+# # elasticsearch.yml
+# version: 8.13.4
+# fullnameOverride: eck-elasticsearch
+# nodeSets:
+#   - name: default
+#     count: 1
+#     config:
+#       node.store.allow_mmap: false
+#     podTemplate:
+#       spec:
+#         containers:
+#           - name: elasticsearch
+#             resources:
+#               limits:
+#                 memory: 2Gi
+#               requests:
+#                 memory: 2Gi
+
+

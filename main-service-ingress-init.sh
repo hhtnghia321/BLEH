@@ -1,19 +1,11 @@
 #!/bin/bash
 
-#-----------------------------------------------------------------------------------
-## Create and Deploy Nginx-ingress Controller (you can use built-in gce controller)
-cd k8s/nginx-ingress
-NAMESPACE_controller="nginx-system"
-kubectl get ns $NAMESPACE_controller >/dev/null 2>&1 || kubectl create ns $NAMESPACE_controller
-helm upgrade --install nginx-ingress -n $NAMESPACE_controller .
-cd /home/ubuntu/BLEH
-
 # set -e  # Exit if any command fails
 #-----------------------------------------------------------------------------------
 NAMESPACE="bleh-dev"
 RELEASE_NAME="bleh"
 CHART_PATH="./"
-cd k8s/BLEH
+cd Main-Serivice-Ingress/BLEH
 
 # 1. Create namespace if not exists
 kubectl get ns $NAMESPACE >/dev/null 2>&1 || kubectl create ns $NAMESPACE

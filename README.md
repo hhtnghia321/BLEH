@@ -59,3 +59,19 @@ It helps you:
    ```bash
    . k8s-init.sh
    ```
+
+### Credential
+
+#### Default Credential Kibana
+
+USERNAME:
+
+```bash
+   elastic
+```
+
+PASSWORD:
+
+```bash
+   kubectl get secret elasticsearch-eck-elasticsearch-es-elastic-user -n bleh-dev -o go-template='{{.data.elastic | base64decode}}'
+```

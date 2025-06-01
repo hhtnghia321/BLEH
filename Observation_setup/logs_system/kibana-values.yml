@@ -1,0 +1,34 @@
+apiVersion: kibana.k8s.elastic.co/v1
+resources:
+  limits:
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 256Mi
+kind: Kibana
+metadata:
+  name: kibana-eck-kibana
+
+version: 8.13.4
+count: 1
+elasticsearchRef:
+  name: elasticsearch-eck-elasticsearch
+http:
+  tls:
+    selfSignedCertificate:
+      disabled: true  # Keep TLS enabled (default), ECK handles it
+
+config:
+  server:
+    publicBaseUrl: http://0.0.0.0.nip.io #fake ENV only use as place holder 
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+  hosts:
+    - host: 0.0.0.0.nip.io #fake ENV only use as place holder 
+      path: /
+  pathType: Prefix
+  tls:
+    enabled: false
